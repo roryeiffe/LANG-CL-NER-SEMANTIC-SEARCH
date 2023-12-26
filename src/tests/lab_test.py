@@ -1,4 +1,4 @@
-from main.lab import create_ner_pipeline, get_Bass_Pro_Shop_company_document, get_George_going_to_dinner_document, get_George_Washington_Document
+from src.main.lab import create_ner_pipeline, get_Bass_Pro_Shop_company_document, get_George_going_to_dinner_document, get_George_Washington_Document
 import unittest
 
 class TestNERSearch(unittest.TestCase):
