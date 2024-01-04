@@ -13,7 +13,7 @@
 # NER Semantic Search Lab
 
 ## Files to Modify
-The code you should modify, as well as the instructions for completing the lab, are in ```src/main/lab.py```. The lab module contains a main section you may use to manually test your code. You should not modify ```src/tests/lab_test.py```. You must pass all test cases provided in tests/lab_test.py to pass the lab.
+The code you should modify, as well as the instructions for completing the lab, are in ```src/main/lab.py```. The lab module contains a main section you may use to manually test your code. You should not modify ```src/test/lab_test.py```. You must pass all test cases provided in tests/lab_test.py to pass the lab.
 
 ## Notes and Resources
 This lab uses a locally downloaded LLM, so the first time you run your tests or manually execute the lab module there may be down time while the model is downloaded.
