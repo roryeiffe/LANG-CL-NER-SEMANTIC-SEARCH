@@ -99,19 +99,21 @@ ner_pipeline = pipeline("ner", model=ner_model, tokenizer=tokenizer)
     the results of the pipeline operation
 """
 
-entities = ner_pipeline(query)
-
-print(entities)
 
 """
     In this case, one entity was detected in the query and its data saved to a dictionary. We now have all the
     pieces we need to augment the query to the Chroma database
 """
 
-results = collection.query(query_texts=[query], n_results=2, where={"word": entities[0]["word"]})
-docs_retrieved = results["documents"]
-number_of_docs = len(docs_retrieved[0])
-print(number_of_docs, docs_retrieved[0])
+def apple():
+    
+    entities = ner_pipeline(query)
+    print("Entities:" + str(entities))
+    results = collection.query(query_texts=[query], n_results=2, where={"word": entities[0]["word"]})
+    print("Results" + str(results))
+    docs_retrieved = results["documents"]
+    number_of_docs = len(docs_retrieved[0])
+    print(number_of_docs, docs_retrieved[0])
 
 """
     The results of the query have now been filtered to only include the Apple company document.
@@ -126,7 +128,7 @@ def create_ner_pipeline():
         initialize your NER pipeline for the rest of the lab
     """
     # TODO: implement the NER pipeline and return it from the function
-    raise RuntimeError("create_ner_pipeline() is not implemented")
+    return pipeline("ner", model=ner_model, tokenizer=tokenizer)
 
 def get_Bass_Pro_Shop_company_document() -> list[str]:
     """
@@ -141,7 +143,19 @@ def get_Bass_Pro_Shop_company_document() -> list[str]:
     try:
         query = "Does Bass Pro Shop sell anything new?"
         ner_pipe = create_ner_pipeline()
-        raise RuntimeError("get_Bass_Pro_Shop_company_document() is not implemented correctly")
+        entities = ner_pipe(query)
+        print("Entities:" + str(entities))
+        name = ""
+        for entity in entities:
+            name += entity["word"] + " "
+        print(name)
+        results = collection.query(query_texts=[query], n_results=2, where={"organization": name.strip()})
+        print("Results" + str(results))
+        docs_retrieved = results["documents"]
+        ids = results["ids"]
+        number_of_docs = len(docs_retrieved[0])
+        print("\n\n\n")
+        return [ids[0], docs_retrieved[0]]
 
     except RuntimeError as e:
         return e
@@ -159,6 +173,14 @@ def get_George_going_to_dinner_document() -> list[str]:
     try:
         query = "why do you take George to Washington?"
         ner_pipe = create_ner_pipeline()
+        entities = ner_pipe(query)
+        print("Entities:" + str(entities))
+        results = collection.query(query_texts=[query], n_results=2, where={"person": entities[0]["word"]})
+        print("Results" + str(results))
+        docs_retrieved = results["documents"]
+        ids = results["ids"]
+        print("\n\n\n")
+        return [ids[0], docs_retrieved[0]]
         raise RuntimeError("get_George_going_to_dinner_document() is not implemented correctly")
     
     except RuntimeError as e:
@@ -175,13 +197,24 @@ def get_George_Washington_Document() -> list[str]:
     # TODO: implement the get_George_Washington_Document() function within the try block. Make sure to
     #       use the create_ner_pipeline() function to create the NER pipeline
     try:
-        query = "Did George Washington and Napoleon Bonaparte ever meet?"
+        query = "why do you take George to Washington?"
         ner_pipe = create_ner_pipeline()
-        raise RuntimeError("get_George_Washington_Document() is not implemented correctly")
+        entities = ner_pipe(query)
+        print("Entities:" + str(entities))
+        name = ""
+        for entity in entities:
+            name += entity["word"] + " "
+        print(name)
+        results = collection.query(query_texts=[query], n_results=2, where={name.strip(): True})
+        print("Results" + str(results))
+        docs_retrieved = results["documents"]
+        ids = results["ids"]
+        print("\n\n\n")
+        return [ids[0], docs_retrieved[0]]
     
     except RuntimeError as e:
         return e
 
 if __name__ == "__main__":
     # Use this space to test your code
-    pass
+    print(get_George_Washington_Document())
