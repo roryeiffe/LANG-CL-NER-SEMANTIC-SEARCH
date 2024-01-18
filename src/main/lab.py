@@ -73,7 +73,6 @@ query = "Is Apple a good brand?"
 results = collection.query(query_texts=[query], n_results=2)
 docs_retrieved = results["documents"]
 number_of_docs = len(docs_retrieved[0])
-print(number_of_docs)
 
 """
     The query returns both the fruit and company documents, the former of which is not relevant to the query.
@@ -108,12 +107,9 @@ ner_pipeline = pipeline("ner", model=ner_model, tokenizer=tokenizer)
 def apple():
     
     entities = ner_pipeline(query)
-    print("Entities:" + str(entities))
     results = collection.query(query_texts=[query], n_results=2, where={"word": entities[0]["word"]})
-    print("Results" + str(results))
     docs_retrieved = results["documents"]
     number_of_docs = len(docs_retrieved[0])
-    print(number_of_docs, docs_retrieved[0])
 
 """
     The results of the query have now been filtered to only include the Apple company document.
@@ -144,17 +140,13 @@ def get_Bass_Pro_Shop_company_document() -> list[str]:
         query = "Does Bass Pro Shop sell anything new?"
         ner_pipe = create_ner_pipeline()
         entities = ner_pipe(query)
-        print("Entities:" + str(entities))
         name = ""
         for entity in entities:
             name += entity["word"] + " "
-        print(name)
         results = collection.query(query_texts=[query], n_results=2, where={"organization": name.strip()})
-        print("Results" + str(results))
         docs_retrieved = results["documents"]
         ids = results["ids"]
         number_of_docs = len(docs_retrieved[0])
-        print("\n\n\n")
         return [ids[0], docs_retrieved[0]]
 
     except RuntimeError as e:
@@ -174,12 +166,9 @@ def get_George_going_to_dinner_document() -> list[str]:
         query = "why do you take George to Washington?"
         ner_pipe = create_ner_pipeline()
         entities = ner_pipe(query)
-        print("Entities:" + str(entities))
         results = collection.query(query_texts=[query], n_results=2, where={"person": entities[0]["word"]})
-        print("Results" + str(results))
         docs_retrieved = results["documents"]
         ids = results["ids"]
-        print("\n\n\n")
         return [ids[0], docs_retrieved[0]]
         raise RuntimeError("get_George_going_to_dinner_document() is not implemented correctly")
     
@@ -200,16 +189,12 @@ def get_George_Washington_Document() -> list[str]:
         query = "why do you take George to Washington?"
         ner_pipe = create_ner_pipeline()
         entities = ner_pipe(query)
-        print("Entities:" + str(entities))
         name = ""
         for entity in entities:
             name += entity["word"] + " "
-        print(name)
         results = collection.query(query_texts=[query], n_results=2, where={name.strip(): True})
-        print("Results" + str(results))
         docs_retrieved = results["documents"]
         ids = results["ids"]
-        print("\n\n\n")
         return [ids[0], docs_retrieved[0]]
     
     except RuntimeError as e:
@@ -217,4 +202,4 @@ def get_George_Washington_Document() -> list[str]:
 
 if __name__ == "__main__":
     # Use this space to test your code
-    print(get_George_Washington_Document())
+    pass
